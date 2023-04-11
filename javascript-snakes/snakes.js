@@ -3280,7 +3280,7 @@ Snakes = function() {
     ],
 
     highscores: [
-      { name: "amy",        score:  3000 }, 
+      { name: "kinzie",        score:  3000 }, 
       { name: "jake",       score:  2500 },
       { name: "ritchie",    score:  2000 },
       { name: "eddie",      score:  1500 },
