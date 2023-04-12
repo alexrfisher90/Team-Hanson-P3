@@ -16,7 +16,7 @@ v+1E3){l=Math.round(u*1E3/(j-v));w=Math.min(w,l);x=Math.max(x,l);s(y.data,Math.m
  */
 
 
-import { gethighscores } from "./gethighscores";
+<script src="gethighscores.js"></script>
 
 (function(){
 
