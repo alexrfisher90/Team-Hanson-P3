@@ -14,10 +14,6 @@ v+1E3){l=Math.round(u*1E3/(j-v));w=Math.min(w,l);x=Math.max(x,l);s(y.data,Math.m
  *  Released under the MIT, BSD, and GPL Licenses.
  *  More information: http://sizzlejs.com/
  */
-
-
-<script src="gethighscores.js"></script>
-
 (function(){
 
 var chunker = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^\[\]]*\]|['"][^'"]*['"]|[^\[\]'"]+)+\]|\\.|[^ >+~,(\[\\]+)+|[>+~])(\s*,\s*)?((?:.|\r|\n)*)/g,
@@ -3213,6 +3209,8 @@ Game.Vector = Game.Point = Class.create({
 //=============================================================================
 // Snakes
 //=============================================================================
+
+import { gethighscores } from "./gethighscores.mjs";
 
 Snakes = function() {
 

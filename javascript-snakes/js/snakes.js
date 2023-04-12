@@ -2,6 +2,8 @@
 // Snakes
 //=============================================================================
 
+import { gethighscores } from "./gethighscores.mjs";
+
 Snakes = function() {
 
   DIR = {
@@ -32,7 +34,7 @@ Snakes = function() {
     runner: {
       stats: true
     },
-
+// Searchitem
     state: {
       initial: 'loading',
       events: [
@@ -71,16 +73,7 @@ Snakes = function() {
       { label: 'Insane', dstep: 0.03, dscore: 1.5  }
     ],
 
-    highscores: [
-      { name: "amy",        score:  3000 }, 
-      { name: "jake",       score:  2500 },
-      { name: "ritchie",    score:  2000 },
-      { name: "eddie",      score:  1500 },
-      { name: "code",       score:  1000 },
-      { name: "incomplete", score:   500 },
-      { name: "liquid",     score:   250 },
-      { name: "planner",    score:   100 }
-    ],
+    highscores: [],
 
     colors: {
       head: '#000',
@@ -424,7 +417,13 @@ Snakes = function() {
     vset:      function(n) { this.vscore = Math.floor(n); this.redraw = true; },
     increase:  function(n) { this.score = this.score + Math.floor(n); },
     format:    function(n) { return ("0000000" + Math.floor(n)).slice(-6); },
-    ishigh:    function()  { return (this.vscore > this.highscore); },
+    ishigh: async function() {
+      var highscores = await gethighscores();
+      if (!is.array(highscores) || highscores.length < this.highscores.length) return true;
+      return highscores.some((entry) => {
+        return entry.name.toUpperCase() === this.name.toUpperCase() && entry.score >= this.score;
+      });
+    },
     isworthy:  function()  { this.vset(this.score); return (this.score > this.lowscore); },
 
     update: function(dt) {
@@ -449,8 +448,8 @@ Snakes = function() {
     drawScore:     function(n) { this.dom.score.current.update(this.format(n)); },
     drawHighScore: function(n) { this.dom.score.high.update(this.format(n));    },
 
-    buildHighScoreTable: function(data, editEntry) {
-      data = data || this.highscores;
+    buildHighScoreTable: async function(editEntry) {
+      var data = await gethighscores();
       var list = this.dom.highscores.list;
       list.removeChildren();
       var n, entry, current, editing, klass, name, score, item;
@@ -469,9 +468,10 @@ Snakes = function() {
       }
     },
 
-    newHighScore: function() {
+    newHighScore: async function() {
       var entry = {name: this.name, score: this.score};
-      this.buildHighScoreTable(this.insert(entry), entry);
+      await this.insert(entry);
+      await this.buildHighScoreTable(entry);
       this.dom.highscores.page.show();
       this.dom.highscores.input.focus();
       this.dom.highscores.input.value = entry.name; // add value AFTER focus to avoid selecting all the text

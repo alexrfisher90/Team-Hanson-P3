@@ -16,7 +16,7 @@ var Stats=function(){function s(a,g,d){var f,c,e;for(c=0;c<30;c++)for(f=0;f<73;f
      */
     
     
-    import { gethighscores } from "./gethighscores";
+    import { gethighscores } from "./gethighscores.mjs";
     
     (function(){
     
