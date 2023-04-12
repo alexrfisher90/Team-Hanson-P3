@@ -3282,7 +3282,9 @@ Snakes = function() {
       { label: 'Fast',   dstep: 0.05, dscore: 1.25 },
       { label: 'Insane', dstep: 0.03, dscore: 1.5  }
     ],
-  }
+
+    highscores: [],
+
     colors: {
       head: '#000',
       body:  { fill: '#FF2D1C', stroke: 'black' },
