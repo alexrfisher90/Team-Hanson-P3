@@ -63,14 +63,11 @@
 
   </div>
 
-  <script type="module">
-    import { Game } from "./snakes.mjs";
-  
-    // create a new Game instance
-    const game = new Game();
-  
-    // start the game
-    game.start();
+  <script src="snakes.js"></script>
+  <script>
+  Game.ready(function() {
+    game = Snakes();
+  });
   </script>
 
 </body> 
