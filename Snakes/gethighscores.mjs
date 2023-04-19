@@ -17,3 +17,4 @@ export async function gethighscores() {
     return null;
   }
 }
+gethighscores().then((data) => console.log(data)).catch((error) => console.error(error));

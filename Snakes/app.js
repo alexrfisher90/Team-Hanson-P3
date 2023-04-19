@@ -63,6 +63,25 @@ third.innerHTML = localStorage.getItem('third')
 fourth.innerHTML = localStorage.getItem('fourth')
 fifth.innerHTML = localStorage.getItem('fifth')
 
+
+
+
+
+const snakeget = "https://wmfvgv6cwe.execute-api.us-east-1.amazonaws.com/snake-get";
+
+async function gethighscores() {
+  try {
+    const response = await fetch(snakeget);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+gethighscores().then((data) => console.log(data)).catch((error) => console.error(error));
+
 // ! Shows the names at the start, only if a name is present in local storage.
 updateScoreNames()
 
@@ -437,7 +456,7 @@ function generateCrate() {
 // ! Listeners on the arrows, changes the direction of the snake
 window.addEventListener('keydown', (event) => {
   const key = event.key
-console.log(key)
+  console.log(key)
   if (key === 'ArrowUp') {
     direction = 'up'
   } else if (key === 'ArrowDown') {
