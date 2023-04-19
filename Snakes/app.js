@@ -562,24 +562,35 @@ godlike.addEventListener('click', () => {
   rapid.classList.remove('activeSpeed')
 })
 
-function updateLeaderboard(names, scores) {
-  const leaderboard = document.getElementById("leaderboard");
-  leaderboard.innerHTML = "";
+function updateLeaderboard(highscores) {
+  const leaderboardContainer = document.querySelector('#leaderboard');
+  leaderboardContainer.innerHTML = '';
 
-  for (let i = 0; i < names.length; i++) {
-    const row = document.createElement("tr");
-    const nameCell = document.createElement("td");
-    const scoreCell = document.createElement("td");
+  const scores = [];
+  const names = [];
 
-    nameCell.textContent = names[i];
-    scoreCell.textContent = scores[i];
+  highscores.forEach((obj) => {
+    if (obj.highscore && obj.highscore.N && obj.playername && obj.playername.S) {
+      scores.push(Number(obj.highscore.N));
+      names.push(obj.playername.S);
+    }
+  });
 
-    row.appendChild(nameCell);
-    row.appendChild(scoreCell);
+  while (scores.length < 5) {
+    scores.push(0);
+  }
 
-    leaderboard.appendChild(row);
+  while (names.length < 5) {
+    names.push('');
+  }
+
+  for (let i = 0; i < scores.length; i++) {
+    const listItem = document.createElement('li');
+    listItem.textContent = `${i + 1}. ${names[i]} - ${scores[i]}`;
+    leaderboardContainer.appendChild(listItem);
   }
 }
+
 
 // ! Logic of the leaderboard
 function checkLeaderboard(highscores) {
