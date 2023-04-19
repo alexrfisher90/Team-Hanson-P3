@@ -81,8 +81,8 @@ async function getAndProcessHighscores() {
           names.push(obj.playername.S);
         }
       });
-      updateScoreNames(names);
-      checkLeaderboard(highscores);
+      updateScoreNames(scores, names);
+      updateLeaderboard(scores, names);
     } else {
       console.log('Error: highscores is not an array');
     }
@@ -113,11 +113,14 @@ async function gethighscores() {
 }
 
 function updateLeaderboard(highscores) {
-  const leaderboardContainer = document.querySelector('.leaderboard');
-  leaderboardContainer.innerHTML = '';
+  const first = document.querySelector('#first');
+  const second = document.querySelector('#second');
+  const third = document.querySelector('#third');
+  const fourth = document.querySelector('#fourth');
+  const fifth = document.querySelector('#fifth');
 
-  const scores = [];
-  const names = [];
+  let scores = [];
+  let names = [];
 
   highscores.forEach((obj) => {
     if (obj.highscore && obj.highscore.N && obj.playername && obj.playername.S) {
@@ -126,43 +129,27 @@ function updateLeaderboard(highscores) {
     }
   });
 
-  const firstPlaceName = document.querySelector('#firstname');
-  const secondPlaceName = document.querySelector('#secondname');
-  const thirdPlaceName = document.querySelector('#thirdname');
-  const fourthPlaceName = document.querySelector('#fourthname');
-  const fifthPlaceName = document.querySelector('#fifthname');
+  // Sort scores in descending order
+  scores.sort((a, b) => b - a);
 
-  const firstPlaceScore = document.querySelector('#first');
-  const secondPlaceScore = document.querySelector('#second');
-  const thirdPlaceScore = document.querySelector('#third');
-  const fourthPlaceScore = document.querySelector('#fourth');
-  const fifthPlaceScore = document.querySelector('#fifth');
-
+  // Update leaderboard elements with scores and names
   if (scores.length >= 1) {
-    firstPlaceName.textContent = names[0];
-    firstPlaceScore.textContent = scores[0];
+    first.innerHTML = `${names[0]} - ${scores[0]}`;
   }
-
   if (scores.length >= 2) {
-    secondPlaceName.textContent = names[1];
-    secondPlaceScore.textContent = scores[1];
+    second.innerHTML = `${names[1]} - ${scores[1]}`;
   }
-
   if (scores.length >= 3) {
-    thirdPlaceName.textContent = names[2];
-    thirdPlaceScore.textContent = scores[2];
+    third.innerHTML = `${names[2]} - ${scores[2]}`;
   }
-
   if (scores.length >= 4) {
-    fourthPlaceName.textContent = names[3];
-    fourthPlaceScore.textContent = scores[3];
+    fourth.innerHTML = `${names[3]} - ${scores[3]}`;
   }
-
   if (scores.length >= 5) {
-    fifthPlaceName.textContent = names[4];
-    fifthPlaceScore.textContent = scores[4];
+    fifth.innerHTML = `${names[4]} - ${scores[4]}`;
   }
 }
+
 
 
 
