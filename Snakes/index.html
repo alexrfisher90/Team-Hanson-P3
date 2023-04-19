@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snake</title>
+  <link rel="icon" href="./img/icon.png">
+  <link type="text/css" rel="stylesheet" href="normalize.css" />
+  <link rel="stylesheet" href="main.css">
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+  <script src="js/jquery-3.3.1.min.js"></script>
+</head>
+
+<body>
+
+  <div class="loader-wrapper">
+    <span class="loader"><span class="loader-inner"></span></span>
+
+    <div class="sk-folding-cube">
+      <div class="sk-cube1 sk-cube"></div>
+      <div class="sk-cube2 sk-cube"></div>
+      <div class="sk-cube4 sk-cube"></div>
+      <div class="sk-cube3 sk-cube"></div>
+    </div>
+
+  </div>
+
+  <div class="left">
+
+    <img class="graphic" src="./img/snake.png">
+  </div>
+
+  <div class="screen">
+    <div class="nav">
+
+      <div class="navbar">
+        <div id="score">0</div>
+
+        <div class="navright">
+
+          <img id="foodicon" src="./img/beetle.gif">
+          <p id="navtext1">1 point</p>
+          <img id="rareicon" src="./img/dragonfly.gif">
+          <p id="navtext2">3 points</p>
+          <img id="crateicon" src="./img/crate.png">
+          <p id="navtext3">10 points</p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="game">
+    </div>
+
+    <p class="instr">Press <span style="color: rgb(235, 227, 227)">[</span><span
+        style="color: rgb(40, 57, 11)">space</span><span style="color: rgb(235, 227, 227)">]</span> to play!</p>
+    <img id="keys" src="./img/keys.png">
+
+    <div class="mobile">
+
+      <div class="controls">
+        <button id="up">Up</button>
+        <div class="lr">
+          <button id="left">Left</button>
+          <button id="right">Right</button>
+
+        </div>
+        <button id="down">Down</button>
+        <button id="start">GO!</button>
+      </div>
+
+    </div>
+
+
+  </div>
+
+  <div class="right">
+
+    <div class="logoset">
+      <img id="logo" src="./img/logo.png">
+      <img id="mobileicon" src="./img/mf.png">
+    </div>
+
+    <div class="leaderboard">
+      <h3 id="h3l">Leaderboard &#127942;</h3>
+      <div class="ranking">
+
+        <div id="firstname"></div>
+        <div id="first">0</div>
+        <div id="secondname"></div>
+        <div id="second">0</div>
+        <div id="thirdname"></div>
+        <div id="third">0</div>
+        <div id="fourthname"></div>
+        <div id="fourth">0</div>
+        <div id="fifthname"></div>
+        <div class="fifth">0</div>
+
+        <div class="playername">
+
+          <div class="name">
+            <p>Name</p>
+          </div>
+
+          <div class="inputname">
+            <input id="playername" type="text" value="" maxlength="10">
+            <button id="ok">&#128077;</button>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <div class="settings">
+      <h3 id="h3s">Snake Speed &#128012;</h3>
+
+      <button class="normal">Normal</button>
+      <button class="fast">Fast <span style="font-style:italic">(+1 point)</span></button>
+      <button class="rapid">Rapid <span style="font-style:italic">(+2 points)</span></button>
+      <button class="godlike">Godlike <span style="font-style:italic">(+3 points)</span></button>
+
+    </div>
+
+  </div>
+
+  <img id="rotate" src="./img/rotate.png">
+
+  <audio class="audio" src=""></audio>
+  <audio loop class="amb" src="./aud/amb.mp3"></audio>
+
+  <script src="app.js" charset="utf-8"></script>
+</body>
+
+</html>
