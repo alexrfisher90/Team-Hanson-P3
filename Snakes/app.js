@@ -113,7 +113,7 @@ async function gethighscores() {
 }
 
 function updateLeaderboard(highscores) {
-  const leaderboardContainer = document.querySelector('#leaderboard');
+  const leaderboardContainer = document.querySelector('.leaderboard');
   leaderboardContainer.innerHTML = '';
 
   const scores = [];
@@ -126,12 +126,44 @@ function updateLeaderboard(highscores) {
     }
   });
 
-  for (let i = 0; i < scores.length; i++) {
-    const listItem = document.createElement('li');
-    listItem.textContent = `${i + 1}. ${names[i]} - ${scores[i]}`;
-    leaderboardContainer.appendChild(listItem);
+  const firstPlaceName = document.querySelector('#firstname');
+  const secondPlaceName = document.querySelector('#secondname');
+  const thirdPlaceName = document.querySelector('#thirdname');
+  const fourthPlaceName = document.querySelector('#fourthname');
+  const fifthPlaceName = document.querySelector('#fifthname');
+
+  const firstPlaceScore = document.querySelector('#first');
+  const secondPlaceScore = document.querySelector('#second');
+  const thirdPlaceScore = document.querySelector('#third');
+  const fourthPlaceScore = document.querySelector('#fourth');
+  const fifthPlaceScore = document.querySelector('#fifth');
+
+  if (scores.length >= 1) {
+    firstPlaceName.textContent = names[0];
+    firstPlaceScore.textContent = scores[0];
+  }
+
+  if (scores.length >= 2) {
+    secondPlaceName.textContent = names[1];
+    secondPlaceScore.textContent = scores[1];
+  }
+
+  if (scores.length >= 3) {
+    thirdPlaceName.textContent = names[2];
+    thirdPlaceScore.textContent = scores[2];
+  }
+
+  if (scores.length >= 4) {
+    fourthPlaceName.textContent = names[3];
+    fourthPlaceScore.textContent = scores[3];
+  }
+
+  if (scores.length >= 5) {
+    fifthPlaceName.textContent = names[4];
+    fifthPlaceScore.textContent = scores[4];
   }
 }
+
 
 
 
@@ -145,7 +177,7 @@ getAndProcessHighscores();
 updateScoreNames()
 
 function updateScoreNames(scores, names) {
-  const namesContainer = document.querySelector('#score-names');
+  const namesContainer = document.querySelector('#leaderboard');
   namesContainer.innerHTML = '';
 
   for (let i = 0; i < scores.length; i++) {
