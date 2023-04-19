@@ -81,10 +81,8 @@ async function getAndProcessHighscores() {
           names.push(obj.playername.S);
         }
       });
-
-      updateScores(scores);
       updateScoreNames(names);
-      checkLeaderboard();
+      checkLeaderboard(highscores);
     } else {
       console.log('Error: highscores is not an array');
     }
@@ -92,6 +90,7 @@ async function getAndProcessHighscores() {
     console.log(error);
   }
 }
+
 
 
 async function gethighscores() {
@@ -105,13 +104,32 @@ async function gethighscores() {
     } else if (typeof data === 'object') {
       return [data];
     } else {
-      return [];
+      return null;
     }
   } catch (error) {
     console.log(error);
-    return [];
+    return null;
   }
 }
+
+function updateLeaderboard(highscores) {
+  const leaderboardList = document.getElementById('leaderboard-list');
+  leaderboardList.innerHTML = '';
+
+  for (let i = 0; i < highscores.length; i++) {
+    const listItem = document.createElement('li');
+    const nameSpan = document.createElement('span');
+    const scoreSpan = document.createElement('span');
+
+    nameSpan.innerText = highscores[i].playername.S;
+    scoreSpan.innerText = highscores[i].highscore.N;
+
+    listItem.appendChild(nameSpan);
+    listItem.appendChild(scoreSpan);
+    leaderboardList.appendChild(listItem);
+  }
+}
+
 
 
 
@@ -122,23 +140,17 @@ getAndProcessHighscores();
 // ! Shows the names at the start, only if a name is present in local storage.
 updateScoreNames()
 
-function updateScoreNames(highscores) {
-  const scoreNameElements = document.querySelectorAll('.score-name');
+function updateScoreNames(names) {
+  const namesContainer = document.querySelector('#leaderboard');
+  namesContainer.innerHTML = '';
 
-  // Loop through all score-name elements
-  for (let i = 0; i < scoreNameElements.length; i++) {
-    const scoreNameElement = scoreNameElements[i];
-
-    // If the index is greater than the length of the highscores array, set the text to "------"
-    if (i >= highscores.length) {
-      scoreNameElement.textContent = '------';
-      continue;
-    }
-
-    // Otherwise, set the text to the player name from the highscores array
-    scoreNameElement.textContent = highscores[i].playername.S;
-  }
+  names.forEach((name, index) => {
+    const listItem = document.createElement('li');
+    listItem.textContent = `${index + 1}. ${name}`;
+    namesContainer.appendChild(listItem);
+  });
 }
+
 
 
 
@@ -628,7 +640,10 @@ function updateLeaderboard(names, scores) {
 }
 
 // ! Logic of the leaderboard
-function checkLeaderboard(highscores, playerScore, playerName) {
+function checkLeaderboard(highscores) {
+  const playerScore = score.toString();
+  const playerName = prompt('Congratulations! You made the leaderboard! Enter your name:');
+
   // Add the player's score and name to the highscores array
   highscores.push({
     highscore: { N: playerScore },
@@ -645,9 +660,10 @@ function checkLeaderboard(highscores, playerScore, playerName) {
   localStorage.setItem('highscores', JSON.stringify(highscores));
 
   // Update the score names and leaderboard display
-  updateScoreNames(highscores);
+  updateScoreNames(highscores.map(obj => obj.playername.S));
   updateLeaderboard(highscores);
 }
+
 
 
 
