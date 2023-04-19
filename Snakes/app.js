@@ -56,16 +56,6 @@ const inputname = document.querySelector('.playername')
 // ! ok button to submit
 const ok = document.querySelector('#ok')
 
-// ! shows the scores at he start
-first.innerHTML = localStorage.getItem('first')
-second.innerHTML = localStorage.getItem('second')
-third.innerHTML = localStorage.getItem('third')
-fourth.innerHTML = localStorage.getItem('fourth')
-fifth.innerHTML = localStorage.getItem('fifth')
-
-
-
-
 const snakeget = "https://wmfvgv6cwe.execute-api.us-east-1.amazonaws.com/snake-get";
 
 async function getAndProcessHighscores() {
@@ -112,78 +102,6 @@ async function gethighscores() {
   }
 }
 
-function updateLeaderboard(highscores) {
-  const first = document.querySelector('#first');
-  const second = document.querySelector('#second');
-  const third = document.querySelector('#third');
-  const fourth = document.querySelector('#fourth');
-  const fifth = document.querySelector('#fifth');
-
-  let scores = [];
-  let names = [];
-
-  highscores.forEach((obj) => {
-    if (obj.highscore && obj.highscore.N && obj.playername && obj.playername.S) {
-      scores.push(Number(obj.highscore.N));
-      names.push(obj.playername.S);
-    }
-  });
-
-  // Sort scores in descending order
-  scores.sort((a, b) => b - a);
-
-  // Update leaderboard elements with scores and names
-  if (scores.length >= 1) {
-    first.innerHTML = `${names[0]} - ${scores[0]}`;
-  }
-  if (scores.length >= 2) {
-    second.innerHTML = `${names[1]} - ${scores[1]}`;
-  }
-  if (scores.length >= 3) {
-    third.innerHTML = `${names[2]} - ${scores[2]}`;
-  }
-  if (scores.length >= 4) {
-    fourth.innerHTML = `${names[3]} - ${scores[3]}`;
-  }
-  if (scores.length >= 5) {
-    fifth.innerHTML = `${names[4]} - ${scores[4]}`;
-  }
-}
-
-
-
-
-
-
-
-getAndProcessHighscores();
-
-
-
-// ! Shows the names at the start, only if a name is present in local storage.
-updateScoreNames()
-
-function updateScoreNames(scores, names) {
-  const namesContainer = document.querySelector('#leaderboard');
-  namesContainer.innerHTML = '';
-
-  for (let i = 0; i < scores.length; i++) {
-    const listItem = document.createElement('li');
-    listItem.textContent = `${i + 1}. ${names[i]} - ${scores[i]}`;
-    namesContainer.appendChild(listItem);
-  }
-}
-
-
-
-
-
-// ! Show the scores at the start
-first.innerHTML = localStorage.getItem('first')
-second.innerHTML = localStorage.getItem('second')
-third.innerHTML = localStorage.getItem('third')
-fourth.innerHTML = localStorage.getItem('fourth')
-fifth.innerHTML = localStorage.getItem('fifth')
 
 // ! OK button listener
 ok.addEventListener('click', () => {
@@ -688,7 +606,22 @@ function checkLeaderboard(highscores) {
   updateLeaderboard(highscores);
 }
 
+function updateScoreNames(scores, names) {
 
+  const first = document.querySelector('#first');
+  const second = document.querySelector('#second');
+  const third = document.querySelector('#third');
+  const fourth = document.querySelector('#fourth');
+  const fifth = document.querySelector('.fifth');
+  const namesContainer = document.querySelector('#leaderboard');
+  namesContainer.innerHTML = '';
+
+  for (let i = 0; i < scores.length; i++) {
+    const listItem = document.createElement('li');
+    listItem.textContent = `${i + 1}. ${names[i]} - ${scores[i]}`;
+    namesContainer.appendChild(listItem);
+  }
+}
 
 
 console.log(window.localStorage)
