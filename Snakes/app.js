@@ -43,34 +43,41 @@ const inputname = document.querySelector('.playername')
 const ok = document.querySelector('#ok')
 
 
-// Retrieve the high scores using gethighscores.js
-let highScores = await getHighScores();
+async function showHighScores() {
+  try {
+    const highScores = await getHighScores();
 
-// Get the index at which the new score should be inserted
-let insertIndex = highScores.findIndex(score => score.score < scoreTotal);
+    // Get the index at which the new score should be inserted
+    let insertIndex = highScores.findIndex(score => score.score < scoreTotal);
 
-// Insert the new score at the appropriate index
-if (insertIndex !== -1) {
-  highScores.splice(insertIndex, 0, { name: playername, score: scoreTotal });
+    // Insert the new score at the appropriate index
+    if (insertIndex !== -1) {
+      highScores.splice(insertIndex, 0, { name: playername, score: scoreTotal });
+    }
+
+    // Remove the last score if there are more than 5
+    if (highScores.length > 10) {
+      highScores.pop();
+    }
+
+    // Update the high score table with the new scores
+    first.innerHTML = highScores[0].score;
+    second.innerHTML = highScores[1].score;
+    third.innerHTML = highScores[2].score;
+    fourth.innerHTML = highScores[3].score;
+    fifth.innerHTML = highScores[4].score;
+
+    firstname.innerHTML = highScores[0].name;
+    secondname.innerHTML = highScores[1].name;
+    thirdname.innerHTML = highScores[2].name;
+    fourthname.innerHTML = highScores[3].name;
+    fifthname.innerHTML = highScores[4].name;
+
+  } catch (error) {
+    console.error(error);
+  }
 }
 
-// Remove the last score if there are more than 5
-if (highScores.length > 10) {
-  highScores.pop();
-}
-
-// Update the high score table with the new scores
-first.innerHTML = highScores[0].score;
-second.innerHTML = highScores[1].score;
-third.innerHTML = highScores[2].score;
-fourth.innerHTML = highScores[3].score;
-fifth.innerHTML = highScores[4].score;
-
-firstname.innerHTML = highScores[0].name;
-secondname.innerHTML = highScores[1].name;
-thirdname.innerHTML = highScores[2].name;
-fourthname.innerHTML = highScores[3].name;
-fifthname.innerHTML = highScores[4].name;
 
 
 
