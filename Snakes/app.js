@@ -4,6 +4,9 @@ $(window).on('load', function () {
   $('.loader-wrapper').slideUp()
 })
 
+
+
+
 //! Settings
 const settings = document.querySelector('.settings')
 const keys = document.querySelector('#keys')
@@ -56,52 +59,122 @@ const inputname = document.querySelector('.playername')
 // ! ok button to submit
 const ok = document.querySelector('#ok')
 
-const snakeget = "https://wmfvgv6cwe.execute-api.us-east-1.amazonaws.com/snake-get";
-
-async function getAndProcessHighscores() {
-  try {
-    const highscores = await gethighscores();
-    const scores = [];
-    const names = [];
-
-    if (Array.isArray(highscores)) {
-      highscores.forEach((obj) => {
-        if (obj.highscore && obj.highscore.N && obj.playername && obj.playername.S) {
-          scores.push(Number(obj.highscore.N));
-          names.push(obj.playername.S);
-        }
-      });
-      updateScoreNames(scores, names);
-      updateLeaderboard(scores, names);
-    } else {
-      console.log('Error: highscores is not an array');
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-
+//THIS CODE IS STUPID
 
 async function gethighscores() {
   try {
-    const response = await fetch(snakeget);
+    const response = await fetch("https://wmfvgv6cwe.execute-api.us-east-1.amazonaws.com/snake-get");
     const data = await response.json();
-    console.log(data);
-
-    if (Array.isArray(data)) {
-      return data;
-    } else if (typeof data === 'object') {
-      return [data];
-    } else {
-      return null;
-    }
+    return data;
   } catch (error) {
     console.log(error);
     return null;
   }
 }
 
+
+window.onload = function () {
+  gethighscores().then(highscores => {
+    console.log("Highscores: ", highscores);
+    displayhighscores(highscores);
+  }).catch(error => {
+    console.log("Error: ", error);
+  });
+}
+
+const leaderboard = document.querySelector('#leaderboard');
+
+async function updateScoreNames() {
+  console.log("Updating score names...");
+
+  const highscores = await gethighscores();
+  console.log("Highscores:", highscores);
+
+  const scores = [];
+  const names = [];
+  const snakeget = "https://wmfvgv6cwe.execute-api.us-east-1.amazonaws.com/snake-get";
+
+  if (highscores && highscores.Items) {
+    console.log("Items found. Looping through...");
+    highscores.Items.forEach((obj) => {
+      if (obj.highscore && obj.highscore.N && obj.playername && obj.playername.S) {
+        scores.push(Number(obj.highscore.N));
+        names.push(obj.playername.S);
+      }
+    });
+
+    leaderboard.innerHTML = '';
+    for (let i = 0; i < scores.length; i++) {
+      const listItem = document.createElement('li');
+      listItem.textContent = `${i + 1}. ${names[i]} - ${scores[i]}`;
+      leaderboard.appendChild(listItem);
+    }
+  } else {
+    console.log("No items found.");
+  }
+}
+
+function displayhighscores(highscores) {
+  const leaderboard = document.querySelector("#leaderboard");
+  leaderboard.innerHTML = "";
+
+  if (highscores) {
+    console.log("Items found. Looping through...");
+    highscores.forEach((obj) => {
+      if (obj.highscore && obj.highscore.N && obj.playername && obj.playername.S) {
+        const score = Number(obj.highscore.N);
+        const name = obj.playername.S;
+        const listItem = document.createElement("li");
+        listItem.textContent = `${name}: ${score}`;
+        leaderboard.appendChild(listItem);
+      }
+    });
+  } else {
+    console.log("No items found.");
+  }
+}
+
+
+
+updateScoreNames();
+
+
+// ! shows the scores at he start
+first.innerHTML = localStorage.getItem('first')
+second.innerHTML = localStorage.getItem('second')
+third.innerHTML = localStorage.getItem('third')
+fourth.innerHTML = localStorage.getItem('fourth')
+fifth.innerHTML = localStorage.getItem('fifth')
+
+// ! Shows the names at the start, only if a name is present in local storage.
+updateScoreNames()
+
+function updateScoreNames() {
+  if (localStorage.getItem('fifthname') !== undefined) {
+    fifthname.innerHTML = localStorage.getItem('fifthname')
+    if (localStorage.getItem('fourthname') !== undefined) {
+      fourthname.innerHTML = localStorage.getItem('fourthname')
+      if (localStorage.getItem('thirdname') !== undefined) {
+        thirdname.innerHTML = localStorage.getItem('thirdname')
+        if (localStorage.getItem('secondname') !== undefined) {
+          secondname.innerHTML = localStorage.getItem('secondname')
+          if (localStorage.getItem('firstname') !== undefined) {
+            firstname.innerHTML = localStorage.getItem('firstname')
+
+          }
+        }
+      }
+    }
+  }
+}
+
+
+// ! Show the scores at the start
+first.innerHTML = localStorage.getItem('first')
+second.innerHTML = localStorage.getItem('second')
+third.innerHTML = localStorage.getItem('third')
+fourth.innerHTML = localStorage.getItem('fourth')
+fifth.innerHTML = localStorage.getItem('fifth')
 
 // ! OK button listener
 ok.addEventListener('click', () => {
@@ -262,7 +335,7 @@ function startGame() {
             cells[over].classList.add('gameover')
           })
 
-          checkLeaderboard(highscores);
+          checkLeaderboard()
           instr.style.visibility = 'visible'
           window.addEventListener('keypress', toggleStartEvent)
           settings.style.visibility = 'visible'
@@ -562,76 +635,102 @@ godlike.addEventListener('click', () => {
   rapid.classList.remove('activeSpeed')
 })
 
-function updateLeaderboard(highscores) {
-  const leaderboardContainer = document.querySelector('#leaderboard');
-  leaderboardContainer.innerHTML = '';
-
-  const scores = [];
-  const names = [];
-
-  highscores.forEach((obj) => {
-    if (obj.highscore && obj.highscore.N && obj.playername && obj.playername.S) {
-      scores.push(Number(obj.highscore.N));
-      names.push(obj.playername.S);
-    }
-  });
-
-  while (scores.length < 5) {
-    scores.push(0);
-  }
-
-  while (names.length < 5) {
-    names.push('');
-  }
-
-  for (let i = 0; i < scores.length; i++) {
-    const listItem = document.createElement('li');
-    listItem.textContent = `${i + 1}. ${names[i]} - ${scores[i]}`;
-    leaderboardContainer.appendChild(listItem);
-  }
-}
-
 
 // ! Logic of the leaderboard
-function checkLeaderboard(highscores) {
-  const playerScore = score.toString();
-  const playerName = prompt('Congratulations! You made the leaderboard! Enter your name:');
+function checkLeaderboard() {
+  let checkHighScore = scoreTotal
 
-  // Add the player's score and name to the highscores array
-  highscores.push({
-    highscore: { N: playerScore },
-    playername: { S: playerName }
-  });
+  if (checkHighScore < localStorage.getItem('fourth') && checkHighScore > localStorage.getItem('fifth')) {
 
-  // Sort the highscores array by score, in descending order
-  highscores.sort((a, b) => b.highscore.N - a.highscore.N);
+    localStorage.setItem('fifth', scoreTotal)
+    fifth.innerHTML = scoreTotal
 
-  // Remove any scores beyond the top 10
-  highscores.splice(10);
+    if (playername !== undefined) {
+      localStorage.setItem('fifthname', playername)
+      fifthname.innerHTML = playername
+      updateScoreNames()
+    } else if (playername === undefined) {
+      localStorage.setItem('fifthname', '')
 
-  // Save the updated highscores array to local storage
-  localStorage.setItem('highscores', JSON.stringify(highscores));
+      updateScoreNames()
+    }
 
-  // Update the score names and leaderboard display
-  updateScoreNames(highscores.map(obj => obj.playername.S));
-  updateLeaderboard(highscores);
-}
 
-function updateScoreNames(scores, names) {
+  } else if (checkHighScore < localStorage.getItem('first')
+    && checkHighScore < localStorage.getItem('second')
+    && checkHighScore < localStorage.getItem('third')
+    && checkHighScore > localStorage.getItem('fifth')) {
 
-  const first = document.querySelector('#first');
-  const second = document.querySelector('#second');
-  const third = document.querySelector('#third');
-  const fourth = document.querySelector('#fourth');
-  const fifth = document.querySelector('.fifth');
-  const namesContainer = document.querySelector('#leaderboard');
-  namesContainer.innerHTML = '';
+    localStorage.setItem('fourth', scoreTotal)
+    fourth.innerHTML = scoreTotal
 
-  for (let i = 0; i < scores.length; i++) {
-    const listItem = document.createElement('li');
-    listItem.textContent = `${i + 1}. ${names[i]} - ${scores[i]}`;
-    namesContainer.appendChild(listItem);
+    if (playername !== undefined) {
+      localStorage.setItem('fourthname', playername)
+      fourthname.innerHTML = playername
+      updateScoreNames()
+    } else if (playername === undefined) {
+      localStorage.setItem('fourthname', '')
+
+      updateScoreNames()
+    }
+
+
+  } else if (checkHighScore < localStorage.getItem('first')
+    && checkHighScore < localStorage.getItem('second')
+    && checkHighScore > localStorage.getItem('fourth')
+    && checkHighScore > localStorage.getItem('fifth')) {
+
+    localStorage.setItem('third', scoreTotal)
+    third.innerHTML = scoreTotal
+
+    if (playername !== undefined) {
+      localStorage.setItem('thirdname', playername)
+      thirdname.innerHTML = playername
+      updateScoreNames()
+    } else if (playername === undefined) {
+      localStorage.setItem('thirdname', '')
+
+      updateScoreNames()
+    }
+
+  } else if (checkHighScore < localStorage.getItem('first')
+    && checkHighScore > localStorage.getItem('third')
+    && checkHighScore > localStorage.getItem('fourth')
+    && checkHighScore > localStorage.getItem('fifth')) {
+
+    localStorage.setItem('second', scoreTotal)
+    second.innerHTML = scoreTotal
+
+    if (playername !== undefined) {
+      localStorage.setItem('secondname', playername)
+      secondname.innerHTML = playername
+      updateScoreNames()
+    } else if (playername === undefined) {
+      localStorage.setItem('secondname', '')
+
+      updateScoreNames()
+    }
+
+  } else if (checkHighScore > localStorage.getItem('second')
+    && checkHighScore > localStorage.getItem('third')
+    && checkHighScore > localStorage.getItem('fourth')
+    && checkHighScore > localStorage.getItem('fifth')) {
+
+    localStorage.setItem('first', scoreTotal)
+    first.innerHTML = scoreTotal
+
+    if (playername !== undefined) {
+      localStorage.setItem('firstname', playername)
+      firstname.innerHTML = playername
+      updateScoreNames()
+    } else if (playername === undefined) {
+      localStorage.setItem('firstname', '')
+
+      updateScoreNames()
+    }
+
   }
+
 }
 
 
