@@ -68,19 +68,37 @@ fifth.innerHTML = localStorage.getItem('fifth')
 
 const snakeget = "https://wmfvgv6cwe.execute-api.us-east-1.amazonaws.com/snake-get";
 
+async function getAndProcessHighscores() {
+  try {
+    const highscores = await gethighscores();
+
+    if (Array.isArray(highscores)) {
+      const scores = highscores.map((obj) => obj.highscore && obj.highscore.N ? obj.highscore.N : null);
+      const names = highscores.map((obj) => obj.playername && obj.playername.S ? obj.playername.S : null);
+
+      updateScoreNames(scores, names);
+      checkLeaderboard();
+    } else {
+      console.log('Error: highscores is not an array');
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 async function gethighscores() {
   try {
     const response = await fetch(snakeget);
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.log(error);
-    return highscores[data];
+    return null;
   }
 }
-gethighscores()
+
+getAndProcessHighscores();
+
 
 
 // ! Shows the names at the start, only if a name is present in local storage.
