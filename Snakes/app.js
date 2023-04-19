@@ -113,22 +113,26 @@ async function gethighscores() {
 }
 
 function updateLeaderboard(highscores) {
-  const leaderboardList = document.getElementById('leaderboard-list');
-  leaderboardList.innerHTML = '';
+  const leaderboardContainer = document.querySelector('#leaderboard');
+  leaderboardContainer.innerHTML = '';
 
-  for (let i = 0; i < highscores.length; i++) {
+  const scores = [];
+  const names = [];
+
+  highscores.forEach((obj) => {
+    if (obj.highscore && obj.highscore.N && obj.playername && obj.playername.S) {
+      scores.push(Number(obj.highscore.N));
+      names.push(obj.playername.S);
+    }
+  });
+
+  for (let i = 0; i < scores.length; i++) {
     const listItem = document.createElement('li');
-    const nameSpan = document.createElement('span');
-    const scoreSpan = document.createElement('span');
-
-    nameSpan.innerText = highscores[i].playername.S;
-    scoreSpan.innerText = highscores[i].highscore.N;
-
-    listItem.appendChild(nameSpan);
-    listItem.appendChild(scoreSpan);
-    leaderboardList.appendChild(listItem);
+    listItem.textContent = `${i + 1}. ${names[i]} - ${scores[i]}`;
+    leaderboardContainer.appendChild(listItem);
   }
 }
+
 
 
 
@@ -140,16 +144,17 @@ getAndProcessHighscores();
 // ! Shows the names at the start, only if a name is present in local storage.
 updateScoreNames()
 
-function updateScoreNames(names) {
-  const namesContainer = document.querySelector('#leaderboard');
+function updateScoreNames(scores, names) {
+  const namesContainer = document.querySelector('#score-names');
   namesContainer.innerHTML = '';
 
-  names.forEach((name, index) => {
+  for (let i = 0; i < scores.length; i++) {
     const listItem = document.createElement('li');
-    listItem.textContent = `${index + 1}. ${name}`;
+    listItem.textContent = `${i + 1}. ${names[i]} - ${scores[i]}`;
     namesContainer.appendChild(listItem);
-  });
+  }
 }
+
 
 
 
@@ -320,7 +325,7 @@ function startGame() {
             cells[over].classList.add('gameover')
           })
 
-          checkLeaderboard()
+          checkLeaderboard(highscores);
           instr.style.visibility = 'visible'
           window.addEventListener('keypress', toggleStartEvent)
           settings.style.visibility = 'visible'
