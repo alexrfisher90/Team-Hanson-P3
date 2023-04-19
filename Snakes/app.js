@@ -71,12 +71,19 @@ const snakeget = "https://wmfvgv6cwe.execute-api.us-east-1.amazonaws.com/snake-g
 async function getAndProcessHighscores() {
   try {
     const highscores = await gethighscores();
+    const scores = [];
+    const names = [];
 
     if (Array.isArray(highscores)) {
-      const scores = highscores.map((obj) => obj.highscore && obj.highscore.N ? obj.highscore.N : null);
-      const names = highscores.map((obj) => obj.playername && obj.playername.S ? obj.playername.S : null);
+      highscores.forEach((obj) => {
+        if (obj.highscore && obj.highscore.N && obj.playername && obj.playername.S) {
+          scores.push(Number(obj.highscore.N));
+          names.push(obj.playername.S);
+        }
+      });
 
-      updateScoreNames(scores, names);
+      updateScores(scores);
+      updateScoreNames(names);
       checkLeaderboard();
     } else {
       console.log('Error: highscores is not an array');
@@ -86,16 +93,27 @@ async function getAndProcessHighscores() {
   }
 }
 
+
 async function gethighscores() {
   try {
     const response = await fetch(snakeget);
     const data = await response.json();
-    return data;
+    console.log(data);
+
+    if (Array.isArray(data)) {
+      return data;
+    } else if (typeof data === 'object') {
+      return [data];
+    } else {
+      return [];
+    }
   } catch (error) {
     console.log(error);
-    return null;
+    return [];
   }
 }
+
+
 
 getAndProcessHighscores();
 
@@ -590,6 +608,24 @@ godlike.addEventListener('click', () => {
   rapid.classList.remove('activeSpeed')
 })
 
+function updateLeaderboard(names, scores) {
+  const leaderboard = document.getElementById("leaderboard");
+  leaderboard.innerHTML = "";
+
+  for (let i = 0; i < names.length; i++) {
+    const row = document.createElement("tr");
+    const nameCell = document.createElement("td");
+    const scoreCell = document.createElement("td");
+
+    nameCell.textContent = names[i];
+    scoreCell.textContent = scores[i];
+
+    row.appendChild(nameCell);
+    row.appendChild(scoreCell);
+
+    leaderboard.appendChild(row);
+  }
+}
 
 // ! Logic of the leaderboard
 function checkLeaderboard(highscores, playerScore, playerName) {
