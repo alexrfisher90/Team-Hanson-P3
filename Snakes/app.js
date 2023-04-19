@@ -30,25 +30,11 @@ const navtext1 = document.querySelector('#navtext1')
 const navtext2 = document.querySelector('#navtext2')
 const navtext3 = document.querySelector('#navtext3')
 
-// ! Leaderboard
-let first = document.querySelector('#first')
-let second = document.querySelector('#second')
-let third = document.querySelector('#third')
-let fourth = document.querySelector('#fourth')
-let fifth = document.querySelector('.fifth')
-
 const fifthActive = document.querySelector('#fifthActive')
 
 // ! tracks playername input
 let playernameinput = document.querySelector('#playername')
 let playername = undefined
-
-// ! Name divs on leaderboard
-let firstname = document.querySelector('#firstname')
-let secondname = document.querySelector('#secondname')
-let thirdname = document.querySelector('#thirdname')
-let fourthname = document.querySelector('#fourthname')
-let fifthname = document.querySelector('#fifthname')
 
 // ! the name input bar
 const inputname = document.querySelector('.playername')
@@ -56,42 +42,39 @@ const inputname = document.querySelector('.playername')
 // ! ok button to submit
 const ok = document.querySelector('#ok')
 
-// ! shows the scores at he start
-first.innerHTML = localStorage.getItem('first')
-second.innerHTML = localStorage.getItem('second')
-third.innerHTML = localStorage.getItem('third')
-fourth.innerHTML = localStorage.getItem('fourth')
-fifth.innerHTML = localStorage.getItem('fifth')
 
-// ! Shows the names at the start, only if a name is present in local storage.
-updateScoreNames()
+// Retrieve the high scores using gethighscores.js
+let highScores = await getHighScores();
 
-function updateScoreNames() {
-  if (localStorage.getItem('fifthname') !== undefined) {
-    fifthname.innerHTML = localStorage.getItem('fifthname')
-    if (localStorage.getItem('fourthname') !== undefined) {
-      fourthname.innerHTML = localStorage.getItem('fourthname')
-      if (localStorage.getItem('thirdname') !== undefined) {
-        thirdname.innerHTML = localStorage.getItem('thirdname')
-        if (localStorage.getItem('secondname') !== undefined) {
-          secondname.innerHTML = localStorage.getItem('secondname')
-          if (localStorage.getItem('firstname') !== undefined) {
-            firstname.innerHTML = localStorage.getItem('firstname')
+// Get the index at which the new score should be inserted
+let insertIndex = highScores.findIndex(score => score.score < scoreTotal);
 
-          }
-        }
-      }
-    }
-  }
+// Insert the new score at the appropriate index
+if (insertIndex !== -1) {
+  highScores.splice(insertIndex, 0, { name: playername, score: scoreTotal });
 }
 
+// Remove the last score if there are more than 5
+if (highScores.length > 10) {
+  highScores.pop();
+}
 
-// ! Show the scores at the start
-first.innerHTML = localStorage.getItem('first')
-second.innerHTML = localStorage.getItem('second')
-third.innerHTML = localStorage.getItem('third')
-fourth.innerHTML = localStorage.getItem('fourth')
-fifth.innerHTML = localStorage.getItem('fifth')
+// Update the high score table with the new scores
+first.innerHTML = highScores[0].score;
+second.innerHTML = highScores[1].score;
+third.innerHTML = highScores[2].score;
+fourth.innerHTML = highScores[3].score;
+fifth.innerHTML = highScores[4].score;
+
+firstname.innerHTML = highScores[0].name;
+secondname.innerHTML = highScores[1].name;
+thirdname.innerHTML = highScores[2].name;
+fourthname.innerHTML = highScores[3].name;
+fifthname.innerHTML = highScores[4].name;
+
+
+
+
 
 // ! OK button listener
 ok.addEventListener('click', () => {
@@ -437,7 +420,7 @@ function generateCrate() {
 // ! Listeners on the arrows, changes the direction of the snake
 window.addEventListener('keydown', (event) => {
   const key = event.key
-console.log(key)
+  console.log(key)
   if (key === 'ArrowUp') {
     direction = 'up'
   } else if (key === 'ArrowDown') {
@@ -551,105 +534,6 @@ godlike.addEventListener('click', () => {
   fast.classList.remove('activeSpeed')
   rapid.classList.remove('activeSpeed')
 })
-
-
-// ! Logic of the leaderboard
-function checkLeaderboard() {
-  let checkHighScore = scoreTotal
-
-  if (checkHighScore < localStorage.getItem('fourth') && checkHighScore > localStorage.getItem('fifth')) {
-
-    localStorage.setItem('fifth', scoreTotal)
-    fifth.innerHTML = scoreTotal
-
-    if (playername !== undefined) {
-      localStorage.setItem('fifthname', playername)
-      fifthname.innerHTML = playername
-      updateScoreNames()
-    } else if (playername === undefined) {
-      localStorage.setItem('fifthname', '')
-
-      updateScoreNames()
-    }
-
-
-  } else if (checkHighScore < localStorage.getItem('first')
-    && checkHighScore < localStorage.getItem('second')
-    && checkHighScore < localStorage.getItem('third')
-    && checkHighScore > localStorage.getItem('fifth')) {
-
-    localStorage.setItem('fourth', scoreTotal)
-    fourth.innerHTML = scoreTotal
-
-    if (playername !== undefined) {
-      localStorage.setItem('fourthname', playername)
-      fourthname.innerHTML = playername
-      updateScoreNames()
-    } else if (playername === undefined) {
-      localStorage.setItem('fourthname', '')
-
-      updateScoreNames()
-    }
-
-
-  } else if (checkHighScore < localStorage.getItem('first')
-    && checkHighScore < localStorage.getItem('second')
-    && checkHighScore > localStorage.getItem('fourth')
-    && checkHighScore > localStorage.getItem('fifth')) {
-
-    localStorage.setItem('third', scoreTotal)
-    third.innerHTML = scoreTotal
-
-    if (playername !== undefined) {
-      localStorage.setItem('thirdname', playername)
-      thirdname.innerHTML = playername
-      updateScoreNames()
-    } else if (playername === undefined) {
-      localStorage.setItem('thirdname', '')
-
-      updateScoreNames()
-    }
-
-  } else if (checkHighScore < localStorage.getItem('first')
-    && checkHighScore > localStorage.getItem('third')
-    && checkHighScore > localStorage.getItem('fourth')
-    && checkHighScore > localStorage.getItem('fifth')) {
-
-    localStorage.setItem('second', scoreTotal)
-    second.innerHTML = scoreTotal
-
-    if (playername !== undefined) {
-      localStorage.setItem('secondname', playername)
-      secondname.innerHTML = playername
-      updateScoreNames()
-    } else if (playername === undefined) {
-      localStorage.setItem('secondname', '')
-
-      updateScoreNames()
-    }
-
-  } else if (checkHighScore > localStorage.getItem('second')
-    && checkHighScore > localStorage.getItem('third')
-    && checkHighScore > localStorage.getItem('fourth')
-    && checkHighScore > localStorage.getItem('fifth')) {
-
-    localStorage.setItem('first', scoreTotal)
-    first.innerHTML = scoreTotal
-
-    if (playername !== undefined) {
-      localStorage.setItem('firstname', playername)
-      firstname.innerHTML = playername
-      updateScoreNames()
-    } else if (playername === undefined) {
-      localStorage.setItem('firstname', '')
-
-      updateScoreNames()
-    }
-
-  }
-
-}
-
 
 console.log(window.localStorage)
 
