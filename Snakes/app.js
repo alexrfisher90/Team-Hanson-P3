@@ -86,24 +86,24 @@ gethighscores()
 // ! Shows the names at the start, only if a name is present in local storage.
 updateScoreNames()
 
-function updateScoreNames() {
-  if (localStorage.gethighscores('fifthname') !== undefined) {
-    fifthname.innerHTML = localStorage.getItem('fifthname')
-    if (localStorage.getItem('fourthname') !== undefined) {
-      fourthname.innerHTML = localStorage.getItem('fourthname')
-      if (localStorage.getItem('thirdname') !== undefined) {
-        thirdname.innerHTML = localStorage.getItem('thirdname')
-        if (localStorage.getItem('secondname') !== undefined) {
-          secondname.innerHTML = localStorage.getItem('secondname')
-          if (localStorage.getItem('firstname') !== undefined) {
-            firstname.innerHTML = localStorage.getItem('firstname')
+function updateScoreNames(highscores) {
+  const scoreNameElements = document.querySelectorAll('.score-name');
 
-          }
-        }
-      }
+  // Loop through all score-name elements
+  for (let i = 0; i < scoreNameElements.length; i++) {
+    const scoreNameElement = scoreNameElements[i];
+
+    // If the index is greater than the length of the highscores array, set the text to "------"
+    if (i >= highscores.length) {
+      scoreNameElement.textContent = '------';
+      continue;
     }
+
+    // Otherwise, set the text to the player name from the highscores array
+    scoreNameElement.textContent = highscores[i].playername.S;
   }
 }
+
 
 
 // ! Show the scores at the start
@@ -574,101 +574,27 @@ godlike.addEventListener('click', () => {
 
 
 // ! Logic of the leaderboard
-function checkLeaderboard() {
-  let checkHighScore = scoreTotal
+function checkLeaderboard(highscores, playerScore, playerName) {
+  // Add the player's score and name to the highscores array
+  highscores.push({
+    highscore: { N: playerScore },
+    playername: { S: playerName }
+  });
 
-  if (checkHighScore < localStorage.getItem('fourth') && checkHighScore > localStorage.getItem('fifth')) {
+  // Sort the highscores array by score, in descending order
+  highscores.sort((a, b) => b.highscore.N - a.highscore.N);
 
-    localStorage.setItem('fifth', scoreTotal)
-    fifth.innerHTML = scoreTotal
+  // Remove any scores beyond the top 10
+  highscores.splice(10);
 
-    if (playername !== undefined) {
-      localStorage.setItem('fifthname', playername)
-      fifthname.innerHTML = playername
-      updateScoreNames()
-    } else if (playername === undefined) {
-      localStorage.setItem('fifthname', '')
+  // Save the updated highscores array to local storage
+  localStorage.setItem('highscores', JSON.stringify(highscores));
 
-      updateScoreNames()
-    }
-
-
-  } else if (checkHighScore < localStorage.getItem('first')
-    && checkHighScore < localStorage.getItem('second')
-    && checkHighScore < localStorage.getItem('third')
-    && checkHighScore > localStorage.getItem('fifth')) {
-
-    localStorage.setItem('fourth', scoreTotal)
-    fourth.innerHTML = scoreTotal
-
-    if (playername !== undefined) {
-      localStorage.setItem('fourthname', playername)
-      fourthname.innerHTML = playername
-      updateScoreNames()
-    } else if (playername === undefined) {
-      localStorage.setItem('fourthname', '')
-
-      updateScoreNames()
-    }
-
-
-  } else if (checkHighScore < localStorage.getItem('first')
-    && checkHighScore < localStorage.getItem('second')
-    && checkHighScore > localStorage.getItem('fourth')
-    && checkHighScore > localStorage.getItem('fifth')) {
-
-    localStorage.setItem('third', scoreTotal)
-    third.innerHTML = scoreTotal
-
-    if (playername !== undefined) {
-      localStorage.setItem('thirdname', playername)
-      thirdname.innerHTML = playername
-      updateScoreNames()
-    } else if (playername === undefined) {
-      localStorage.setItem('thirdname', '')
-
-      updateScoreNames()
-    }
-
-  } else if (checkHighScore < localStorage.getItem('first')
-    && checkHighScore > localStorage.getItem('third')
-    && checkHighScore > localStorage.getItem('fourth')
-    && checkHighScore > localStorage.getItem('fifth')) {
-
-    localStorage.setItem('second', scoreTotal)
-    second.innerHTML = scoreTotal
-
-    if (playername !== undefined) {
-      localStorage.setItem('secondname', playername)
-      secondname.innerHTML = playername
-      updateScoreNames()
-    } else if (playername === undefined) {
-      localStorage.setItem('secondname', '')
-
-      updateScoreNames()
-    }
-
-  } else if (checkHighScore > localStorage.getItem('second')
-    && checkHighScore > localStorage.getItem('third')
-    && checkHighScore > localStorage.getItem('fourth')
-    && checkHighScore > localStorage.getItem('fifth')) {
-
-    localStorage.setItem('first', scoreTotal)
-    first.innerHTML = scoreTotal
-
-    if (playername !== undefined) {
-      localStorage.setItem('firstname', playername)
-      firstname.innerHTML = playername
-      updateScoreNames()
-    } else if (playername === undefined) {
-      localStorage.setItem('firstname', '')
-
-      updateScoreNames()
-    }
-
-  }
-
+  // Update the score names and leaderboard display
+  updateScoreNames(highscores);
+  updateLeaderboard(highscores);
 }
+
 
 
 console.log(window.localStorage)
