@@ -47,11 +47,14 @@ body {
   border-radius: 20px 20px 22px 22px;
 }
 
-#firstname,
-#secondname,
-#thirdname,
-#fourthname,
-#fifthname {
+#name1,
+#name2,
+#name3,
+#name4,
+#name5,
+#name6,
+#name7,
+#name8 {
   font-size: 1vw;
   text-align: center;
   padding-top: 0.3vw;
@@ -59,28 +62,30 @@ body {
   border-right: 2px solid black;
 }
 
-#firstname {
-  font-size: 1.2vw;
-  background-color: rgb(228, 212, 72, 0.7);
+#name1 {
+  font-size: 1.5vw;
+  font-family: 'Courier New', Courier, monospace;
+  color: rgb(255, 255, 255);
+  background-color: rgba(85, 79, 27, 0.7);
   font-weight: bold;
 }
 
-#secondname {
+#name2 {
   background-color: rgb(192, 192, 192, 0.7);
   font-weight: bold;
 }
 
-#thirdname {
-  background-color: rgb(205, 127, 50, 0.7);
+#name3 {
+  background-color: rgba(71, 44, 18, 0.7);
   font-weight: bold;
 }
 
-#fourthname {
+#name4 {
   background-color: rgb(124, 129, 136, 0.7);
   font-weight: bold;
 }
 
-#fifthname {
+#name5 {
   background-color: rgb(67, 68, 64, 0.7);
   font-weight: bold;
 }
@@ -90,8 +95,9 @@ body {
 #second,
 #third,
 #fourth,
-.fifth {
+#fifth {
   text-align: center;
+  flex-direction: column;
   font-size: 1vw;
   border-bottom: 1px solid black;
   border-left: 2px solid black;
@@ -331,6 +337,7 @@ body {
   flex: 3;
   justify-content: space-evenly;
 }
+
 .logoset {
   display: flex;
   flex-direction: row;
@@ -342,6 +349,7 @@ body {
   opacity: 0.8;
   height: 100%;
 }
+
 #mobileicon {
   align-self: center;
   width: 5vw;
@@ -718,6 +726,7 @@ body {
   #rotate {
     display: none;
   }
+
   #mobileicon {
     display: none;
   }
@@ -936,7 +945,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color:rgb(40, 57, 11);
+  background-color: rgb(40, 57, 11);
   -webkit-animation: sk-foldCubeAngle 2.4s infinite linear both;
   animation: sk-foldCubeAngle 2.4s infinite linear both;
   -webkit-transform-origin: 100% 100%;
