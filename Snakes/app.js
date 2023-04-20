@@ -15,6 +15,7 @@ window.onload = function () {
 }
 
 
+
 //! Settings
 const settings = document.querySelector('.settings')
 const keys = document.querySelector('#keys')
@@ -41,6 +42,12 @@ const navtext1 = document.querySelector('#navtext1')
 const navtext2 = document.querySelector('#navtext2')
 const navtext3 = document.querySelector('#navtext3')
 
+// ! Leaderboard
+let first = document.querySelector('#first')
+let second = document.querySelector('#second')
+let third = document.querySelector('#third')
+let fourth = document.querySelector('#fourth')
+let fifth = document.querySelector('.fifth')
 
 const fifthActive = document.querySelector('#fifthActive')
 
