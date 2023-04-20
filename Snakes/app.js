@@ -36,7 +36,6 @@ const snakegraphic = document.querySelector('.graphic')
 
 const gelatine = document.querySelector('.graphicgelatine')
 
-
 // ! screen points update
 const navtext1 = document.querySelector('#navtext1')
 const navtext2 = document.querySelector('#navtext2')
