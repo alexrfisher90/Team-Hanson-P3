@@ -147,18 +147,20 @@ function displayhighscores(highscores) {
   }
 }
 // ! Logic of the leaderboard
-async function checkLeaderboard(score) {
+async function checkLeaderboard(stopScore) {
   const lowestScore = await lowesthighscore();
   if (document.querySelector('#score').textContent > Number(lowestScore.N)) {
     let playername = prompt(`Congrats! You made the leaderboard!`)
-    addhighscore(playername, score);
+    addhighscore(playername, stopScore);
   }
   else {
     console.log(Number(lowestScore.N), document.querySelector('#score').textContent)
     alert("Loser")
   }
 }
-async function addhighscore(playername, score) {
+async function addhighscore(playername) {
+  const scoreDiv = document.querySelector('#score');
+  const stopScore = parseInt(scoreDiv.textContent);
   try {
     const response = await fetch(endpoint, {
       method: 'PUT',
@@ -167,7 +169,7 @@ async function addhighscore(playername, score) {
       },
       body: JSON.stringify({
         "playername": playername,
-        "highscore": score
+        "highscore": stopScore
       })
     });
     const data = await response.json();
