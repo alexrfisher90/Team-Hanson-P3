@@ -88,7 +88,6 @@ async function updateScoreNames() {
 
   const scores = [];
   const names = [];
-  const snakeget = "https://wmfvgv6cwe.execute-api.us-east-1.amazonaws.com/snake-get";
 
   if (highscores) {
     console.log("Items found. Looping through...");
@@ -597,99 +596,65 @@ godlike.addEventListener('click', () => {
 
 // ! Logic of the leaderboard
 function checkLeaderboard() {
-  let checkHighScore = scoreTotal
+  let checkHighScore = scoreTotal;
 
-  if (checkHighScore < localStorage.getItem('fourth') && checkHighScore > localStorage.getItem('fifth')) {
+  gethighscores().then((highscores) => {
+    const sortedHighscores = highscores.sort((a, b) => b.highscore - a.highscore);
 
-    localStorage.setItem('fifth', scoreTotal)
-    fifth.innerHTML = scoreTotal
+    const index = sortedHighscores.findIndex((item) => item.highscore < checkHighScore);
 
-    if (playername !== undefined) {
-      localStorage.setItem('fifthname', playername)
-      fifthname.innerHTML = playername
-      updateScoreNames()
-    } else if (playername === undefined) {
-      localStorage.setItem('fifthname', '')
+    if (index === -1 && sortedHighscores.length < 5) {
+      const payload = {
+        playername: playername || "",
+        highscore: scoreTotal,
+      };
 
-      updateScoreNames()
+      fetch("endpoint", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          updateLeaderboard(data);
+        })
+        .catch((err) => console.log(err));
+    } else if (index !== -1) {
+      sortedHighscores.splice(index, 0, { playername: playername || "", highscore: scoreTotal });
+
+      const payload = sortedHighscores.slice(0, 5);
+
+      fetch("endpoint", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          updateLeaderboard(data);
+        })
+        .catch((err) => console.log(err));
     }
+  });
+}
 
+function updateLeaderboard(highscores) {
+  first.innerHTML = highscores[0].highscore || "";
+  firstname.innerHTML = highscores[0].playername || "";
+  second.innerHTML = highscores[1].highscore || "";
+  secondname.innerHTML = highscores[1].playername || "";
+  third.innerHTML = highscores[2].highscore || "";
+  thirdname.innerHTML = highscores[2].playername || "";
+  fourth.innerHTML = highscores[3].highscore || "";
+  fourthname.innerHTML = highscores[3].playername || "";
+  fifth.innerHTML = highscores[4].highscore || "";
+  fifthname.innerHTML = highscores[4].playername || "";
 
-  } else if (checkHighScore < localStorage.getItem('first')
-    && checkHighScore < localStorage.getItem('second')
-    && checkHighScore < localStorage.getItem('third')
-    && checkHighScore > localStorage.getItem('fifth')) {
-
-    localStorage.setItem('fourth', scoreTotal)
-    fourth.innerHTML = scoreTotal
-
-    if (playername !== undefined) {
-      localStorage.setItem('fourthname', playername)
-      fourthname.innerHTML = playername
-      updateScoreNames()
-    } else if (playername === undefined) {
-      localStorage.setItem('fourthname', '')
-
-      updateScoreNames()
-    }
-
-
-  } else if (checkHighScore < localStorage.getItem('first')
-    && checkHighScore < localStorage.getItem('second')
-    && checkHighScore > localStorage.getItem('fourth')
-    && checkHighScore > localStorage.getItem('fifth')) {
-
-    localStorage.setItem('third', scoreTotal)
-    third.innerHTML = scoreTotal
-
-    if (playername !== undefined) {
-      localStorage.setItem('thirdname', playername)
-      thirdname.innerHTML = playername
-      updateScoreNames()
-    } else if (playername === undefined) {
-      localStorage.setItem('thirdname', '')
-
-      updateScoreNames()
-    }
-
-  } else if (checkHighScore < localStorage.getItem('first')
-    && checkHighScore > localStorage.getItem('third')
-    && checkHighScore > localStorage.getItem('fourth')
-    && checkHighScore > localStorage.getItem('fifth')) {
-
-    localStorage.setItem('second', scoreTotal)
-    second.innerHTML = scoreTotal
-
-    if (playername !== undefined) {
-      localStorage.setItem('secondname', playername)
-      secondname.innerHTML = playername
-      updateScoreNames()
-    } else if (playername === undefined) {
-      localStorage.setItem('secondname', '')
-
-      updateScoreNames()
-    }
-
-  } else if (checkHighScore > localStorage.getItem('second')
-    && checkHighScore > localStorage.getItem('third')
-    && checkHighScore > localStorage.getItem('fourth')
-    && checkHighScore > localStorage.getItem('fifth')) {
-
-    localStorage.setItem('first', scoreTotal)
-    first.innerHTML = scoreTotal
-
-    if (playername !== undefined) {
-      localStorage.setItem('firstname', playername)
-      firstname.innerHTML = playername
-      updateScoreNames()
-    } else if (playername === undefined) {
-      localStorage.setItem('firstname', '')
-
-      updateScoreNames()
-    }
-
-  }
-
+  updateScoreNames();
 }
 
 
