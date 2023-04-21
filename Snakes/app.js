@@ -63,16 +63,20 @@ const ok = document.querySelector('#ok')
 
 //THIS CODE IS STUPID
 
-async function gethighscores() {
+const endpoint = "https://el6v7i77d4.execute-api.us-east-1.amazonaws.com/prod/";
+
+const gethighscores = async () => {
   try {
-    const response = await fetch("https://wmfvgv6cwe.execute-api.us-east-1.amazonaws.com/snake-get");
+    const response = await fetch(endpoint, {
+      method: "GET"
+    });
     const data = await response.json();
     return data;
   } catch (error) {
     console.log(error);
     return null;
   }
-}
+};
 
 const leaderboard = document.querySelector('#leaderboard');
 
