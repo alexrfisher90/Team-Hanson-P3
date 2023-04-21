@@ -147,14 +147,16 @@ function displayhighscores(highscores) {
   }
 }
 // ! Logic of the leaderboard
-async function checkLeaderboard(stopScore) {
+async function checkLeaderboard() {
   const lowestScore = await lowesthighscore();
-  if (document.querySelector('#score').textContent > Number(lowestScore.N)) {
+  const scoreDiv = document.querySelector('#score');
+  let stopScore = parseInt(scoreDiv.textContent);
+  if (stopScore > Number(lowestScore)) {
     let playername = prompt(`Congrats! You made the leaderboard!`)
     addhighscore(playername, stopScore);
   }
   else {
-    console.log(Number(lowestScore.N), document.querySelector('#score').textContent)
+    console.log(Number(lowestScore), stopScore)
     alert("Loser")
   }
 }
@@ -180,15 +182,7 @@ async function addhighscore(playername) {
 }
 
 
-// ! OK button listener
-ok.addEventListener('click', () => {
-  audioPlayer.src = './aud/click.mp3'
-  audioPlayer.play()
-  playername = playernameinput.value
-  playername = playername.charAt(0).toUpperCase() + playername.slice(1)
-  inputname.style.visibility = 'hidden'
-  fifth.classList.add('fifthActive')
-})
+
 
 
 // ! Game variables
