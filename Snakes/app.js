@@ -1,18 +1,21 @@
 // LOADER ON START
 
+// LOADER ON START
 $(window).on('load', function () {
   $('.loader-wrapper').slideUp()
 })
-window.onload = function () {
-  gethighscores().then(highscores => {
+
+window.onload = async function () {
+  try {
+    const highscores = await gethighscores();
     console.log("Highscores: ", highscores);
     displayhighscores(highscores);
-  }).catch(error => {
+  } catch (error) {
     console.log("Error: ", error);
-  }); 'load', function () {
-    $('.loader-wrapper').slideUp()
   }
-}
+
+  $('.loader-wrapper').slideUp();
+};
 
 
 
@@ -100,23 +103,18 @@ async function updateScoreNames() {
   const highscores = await gethighscores();
   console.log("Highscores:", highscores);
 
-  const scores = [];
-  const names = [];
-
   if (highscores) {
     console.log("Items found. Looping through...");
-    highscores.forEach((obj) => {
+    for (let i = 0; i < highscores.length; i++) {
+      const obj = highscores[i];
       if (obj.highscore && obj.highscore.N && obj.playername && obj.playername.S) {
-        scores.push(Number(obj.highscore.N));
-        names.push(obj.playername.S);
+        const score = Number(obj.highscore.N);
+        const name = obj.playername.S;
+        const divItem = document.querySelector(`#name${i + 1}`);
+        if (divItem) {
+          divItem.innerHTML = `${name}: ${score}`;
+        }
       }
-    });
-
-    leaderboard.innerHTML = '';
-    for (let i = 0; i < scores.length; i++) {
-      const listItem = document.createElement('li');
-      listItem.textContent = `${i + 1}. ${names[i]} - ${scores[i]} `;
-      leaderboard.appendChild(listItem);
     }
   } else {
     console.log("No items found.");
@@ -125,20 +123,19 @@ async function updateScoreNames() {
 
 function displayhighscores(highscores) {
   const leaderboard = document.querySelector("#leaderboard");
-
   if (highscores) {
     console.log("Items found. Looping through...");
     const items = highscores;
-    const numItems = highscores.length > 10 ? 10 : highscores.length;
+    const numItems = highscores.length > 8 ? 8 : highscores.length;
 
-    for (let i = 0; i < highscores.length; i++) {
+    for (let i = 0; i < numItems; i++) {
       const obj = highscores[i];
       if (obj.highscore && obj.highscore.N && obj.playername && obj.playername.S) {
         const score = Number(obj.highscore.N);
         const name = obj.playername.S;
-        const listItem = document.querySelector(`#name${i + 1} `);
-        if (listItem) {
-          listItem.textContent = `${name}: ${score} `;
+        const divItem = document.querySelector(`#name${i + 1}`);
+        if (divItem) {
+          divItem.textContent = `${name}: ${score}`;
         }
       }
     }
@@ -146,18 +143,18 @@ function displayhighscores(highscores) {
     console.log("No items found.");
   }
 }
+
 // ! Logic of the leaderboard
 async function checkLeaderboard() {
   const lowestScore = await lowesthighscore();
   const scoreDiv = document.querySelector('#score');
   let stopScore = parseInt(scoreDiv.textContent);
-  if (stopScore > Number(lowestScore)) {
+  if (stopScore > Number(lowestScore.N)) {
     let playername = prompt(`Congrats! You made the leaderboard!`)
     addhighscore(playername, stopScore);
   }
   else {
-    console.log(Number(lowestScore), stopScore)
-    alert("Loser")
+    updateScoreNames()
   }
 }
 async function addhighscore(playername) {
@@ -176,14 +173,13 @@ async function addhighscore(playername) {
     });
     const data = await response.json();
     console.log(data);
+
+    return updateScoreNames()
+
   } catch (error) {
     console.log(error);
   }
 }
-
-
-
-
 
 // ! Game variables
 const game = document.querySelector('.game')

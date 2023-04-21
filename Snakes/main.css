@@ -39,15 +39,17 @@ body {
   animation: gelatine 0.7s;
 }
 
+
 .leaderboard {
   display: flex;
   flex-direction: column;
+  list-style-type: none;
   align-self: center;
   width: 50%;
   border-radius: 20px 20px 22px 22px;
 }
 
-#name1,
+.name1,
 #name2,
 #name3,
 #name4,
@@ -57,6 +59,7 @@ body {
 #name8 {
   font-size: 1vw;
   text-align: center;
+  list-style-type: none;
   padding-top: 0.3vw;
   border-left: 2px solid black;
   border-right: 2px solid black;
@@ -64,6 +67,7 @@ body {
 
 #name1 {
   font-size: 1.5vw;
+  list-style-type: none;
   font-family: 'Courier New', Courier, monospace;
   color: rgb(255, 255, 255);
   background-color: rgba(85, 79, 27, 0.7);
@@ -72,6 +76,7 @@ body {
 
 #name2 {
   font-size: 1.5vw;
+  list-style-type: none;
   font-family: 'Courier New', Courier, monospace;
   color: rgb(255, 255, 255);
   background-color: rgb(192, 192, 192, 0.7);
@@ -80,6 +85,7 @@ body {
 
 #name3 {
   font-size: 1.5vw;
+  list-style-type: none;
   font-family: 'Courier New', Courier, monospace;
   color: rgb(255, 255, 255);
   background-color: rgba(71, 44, 18, 0.7);
@@ -88,6 +94,7 @@ body {
 
 #name4 {
   font-size: 1.5vw;
+  list-style-type: none;
   font-family: 'Courier New', Courier, monospace;
   color: rgb(255, 255, 255);
   background-color: rgb(124, 129, 136, 0.7);
@@ -96,6 +103,7 @@ body {
 
 #name5 {
   font-size: 1.5vw;
+  list-style-type: none;
   font-family: 'Courier New', Courier, monospace;
   color: rgb(255, 255, 255);
   background-color: rgb(67, 68, 64, 0.7);
@@ -104,6 +112,7 @@ body {
 
 #name6 {
   font-size: 1.5vw;
+  list-style-type: none;
   font-family: 'Courier New', Courier, monospace;
   color: rgb(255, 255, 255);
   background-color: rgba(85, 79, 27, 0.7);
@@ -112,6 +121,7 @@ body {
 
 #name7 {
   font-size: 1.5vw;
+  list-style-type: none;
   font-family: 'Courier New', Courier, monospace;
   color: rgb(255, 255, 255);
   background-color: rgb(192, 192, 192, 0.7);
@@ -120,6 +130,7 @@ body {
 
 #name8 {
   font-size: 1.5vw;
+  list-style-type: none;
   font-family: 'Courier New', Courier, monospace;
   color: rgb(255, 255, 255);
   background-color: rgba(71, 44, 18, 0.7);
@@ -128,6 +139,7 @@ body {
 
 .fifth {
   text-align: center;
+
   background-color: rgb(67, 68, 64, 0.7);
   border-bottom: 2px solid black;
   border-left: 2px solid black;
