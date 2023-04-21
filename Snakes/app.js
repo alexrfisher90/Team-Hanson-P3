@@ -78,6 +78,20 @@ const gethighscores = async () => {
   }
 };
 
+const lowesthighscore = async () => {
+  try {
+    const response = await fetch(endpoint, {
+      method: "GET"
+    });
+    const data = await response.json();
+    const lastHighscore = data[data.length - 1].highscore;
+    return lastHighscore;
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+};
+
 const leaderboard = document.querySelector('#leaderboard');
 
 async function updateScoreNames() {
@@ -101,7 +115,7 @@ async function updateScoreNames() {
     leaderboard.innerHTML = '';
     for (let i = 0; i < scores.length; i++) {
       const listItem = document.createElement('li');
-      listItem.textContent = `${i + 1}. ${names[i]} - ${scores[i]}`;
+      listItem.textContent = `${i + 1}. ${names[i]} - ${scores[i]} `;
       leaderboard.appendChild(listItem);
     }
   } else {
@@ -122,9 +136,9 @@ function displayhighscores(highscores) {
       if (obj.highscore && obj.highscore.N && obj.playername && obj.playername.S) {
         const score = Number(obj.highscore.N);
         const name = obj.playername.S;
-        const listItem = document.querySelector(`#name${i + 1}`);
+        const listItem = document.querySelector(`#name${i + 1} `);
         if (listItem) {
-          listItem.textContent = `${name}: ${score}`;
+          listItem.textContent = `${name}: ${score} `;
         }
       }
     }
@@ -282,7 +296,7 @@ function startGame() {
     function contact() {
       for (i = 0; i < snake.length; i++) {
         if (snake.indexOf(snake[i]) !== snake.lastIndexOf(snake[i])) {
-
+          checkLeaderboard()
           clearInterval(interval)
 
           for (var i = 0; i < cells.length; i++) {
@@ -293,7 +307,7 @@ function startGame() {
             cells[over].classList.add('gameover')
           })
 
-          checkLeaderboard()
+
           instr.style.visibility = 'visible'
           window.addEventListener('keypress', toggleStartEvent)
           settings.style.visibility = 'visible'
@@ -595,53 +609,16 @@ godlike.addEventListener('click', () => {
 
 
 // ! Logic of the leaderboard
-function checkLeaderboard() {
-  let checkHighScore = scoreTotal;
-
-  gethighscores().then((highscores) => {
-    const sortedHighscores = highscores.sort((a, b) => b.highscore - a.highscore);
-
-    const index = sortedHighscores.findIndex((item) => item.highscore < checkHighScore);
-
-    if (index === -1 && sortedHighscores.length < 5) {
-      const payload = {
-        playername: playername || "",
-        highscore: scoreTotal,
-      };
-
-      fetch("endpoint", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          updateLeaderboard(data);
-        })
-        .catch((err) => console.log(err));
-    } else if (index !== -1) {
-      const payload = {
-        playername: playername || "",
-        highscore: scoreTotal,
-      };
-
-      fetch(`endpoint/${sortedHighscores[index]._id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          updateLeaderboard(data);
-        })
-        .catch((err) => console.log(err));
-    }
-  });
+function checkLeaderboard(score) {
+  if (scoreTotal > lowesthighscore()) {
+    let playername = prompt(`Congrats! You made the leaderboard!`)
+    addhighscore(playername, score);
+  }
+  else {
+    alert("Loser")
+  }
 }
+
 
 
 
