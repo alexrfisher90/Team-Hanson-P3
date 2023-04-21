@@ -609,7 +609,7 @@ function checkLeaderboard() {
         highscore: scoreTotal,
       };
 
-      fetch("/api/highscores", {
+      fetch("endpoint", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -622,13 +622,12 @@ function checkLeaderboard() {
         })
         .catch((err) => console.log(err));
     } else if (index !== -1) {
-      sortedHighscores.splice(index, 0, { playername: playername || "", highscore: scoreTotal });
-
       const payload = {
-        highscores: sortedHighscores.slice(0, 5)
+        playername: playername || "",
+        highscore: scoreTotal,
       };
 
-      fetch("/api/highscores", {
+      fetch(`endpoint/${sortedHighscores[index]._id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -643,6 +642,7 @@ function checkLeaderboard() {
     }
   });
 }
+
 
 
 
