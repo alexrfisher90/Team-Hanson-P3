@@ -146,6 +146,36 @@ function displayhighscores(highscores) {
     console.log("No items found.");
   }
 }
+// ! Logic of the leaderboard
+async function checkLeaderboard(score) {
+  const lowestScore = await lowesthighscore();
+  if (document.querySelector('#score').textContent > Number(lowestScore.N)) {
+    let playername = prompt(`Congrats! You made the leaderboard!`)
+    addhighscore(playername, score);
+  }
+  else {
+    console.log(Number(lowestScore.N), document.querySelector('#score').textContent)
+    alert("Loser")
+  }
+}
+async function addhighscore(playername, score) {
+  try {
+    const response = await fetch(endpoint, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "playername": playername,
+        "highscore": score
+      })
+    });
+    const data = await response.json();
+    console.log(data);
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 
 // ! OK button listener
@@ -606,22 +636,6 @@ godlike.addEventListener('click', () => {
   fast.classList.remove('activeSpeed')
   rapid.classList.remove('activeSpeed')
 })
-
-
-// ! Logic of the leaderboard
-function checkLeaderboard(score) {
-  if (scoreTotal > lowesthighscore()) {
-    let playername = prompt(`Congrats! You made the leaderboard!`)
-    addhighscore(playername, score);
-  }
-  else {
-    alert("Loser")
-  }
-}
-
-
-
-
 
 console.log(window.localStorage)
 
