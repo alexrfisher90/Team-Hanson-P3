@@ -609,7 +609,7 @@ function checkLeaderboard() {
         highscore: scoreTotal,
       };
 
-      fetch("endpoint", {
+      fetch("/api/highscores", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -624,9 +624,11 @@ function checkLeaderboard() {
     } else if (index !== -1) {
       sortedHighscores.splice(index, 0, { playername: playername || "", highscore: scoreTotal });
 
-      const payload = sortedHighscores.slice(0, 5);
+      const payload = {
+        highscores: sortedHighscores.slice(0, 5)
+      };
 
-      fetch("endpoint", {
+      fetch("/api/highscores", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -642,20 +644,6 @@ function checkLeaderboard() {
   });
 }
 
-function updateLeaderboard(highscores) {
-  first.innerHTML = highscores[0].highscore || "";
-  firstname.innerHTML = highscores[0].playername || "";
-  second.innerHTML = highscores[1].highscore || "";
-  secondname.innerHTML = highscores[1].playername || "";
-  third.innerHTML = highscores[2].highscore || "";
-  thirdname.innerHTML = highscores[2].playername || "";
-  fourth.innerHTML = highscores[3].highscore || "";
-  fourthname.innerHTML = highscores[3].playername || "";
-  fifth.innerHTML = highscores[4].highscore || "";
-  fifthname.innerHTML = highscores[4].playername || "";
-
-  updateScoreNames();
-}
 
 
 console.log(window.localStorage)
