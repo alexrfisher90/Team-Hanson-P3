@@ -57,10 +57,6 @@ const fifthActive = document.querySelector('#fifthActive')
 let playernameinput = document.querySelector('#playername')
 let playername = undefined
 
-
-// ! the name input bar
-const inputname = document.querySelector('.playername')
-
 // ! ok button to submit
 const ok = document.querySelector('#ok')
 
@@ -248,7 +244,6 @@ function toggleStartEvent(event) {
     instr.style.visibility = 'hidden'
     settings.style.visibility = 'hidden'
     keys.style.visibility = 'hidden'
-    inputname.style.visibility = 'hidden'
     fifth.classList.add('fifthActive')
 
     for (var i = 0; i < cells.length; i++) {
@@ -334,7 +329,6 @@ function startGame() {
           window.addEventListener('keypress', toggleStartEvent)
           settings.style.visibility = 'visible'
           keys.style.visibility = 'visible'
-          inputname.style.visibility = 'visible'
           fifth.classList.remove('fifthActive')
 
           audioPlayer.src = './aud/3.mp3'
@@ -560,7 +554,6 @@ start.addEventListener('click', () => {
   instr.style.visibility = 'hidden'
   settings.style.visibility = 'hidden'
   keys.style.visibility = 'hidden'
-  inputname.style.visibility = 'hidden'
   fifth.classList.add('fifthActive')
 
   for (var i = 0; i < cells.length; i++) {
