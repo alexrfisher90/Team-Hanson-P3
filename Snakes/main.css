@@ -49,7 +49,7 @@ body {
   border-radius: 20px 20px 22px 22px;
 }
 
-.name1,
+#name1,
 #name2,
 #name3,
 #name4,
@@ -58,6 +58,7 @@ body {
 #name7,
 #name8 {
   font-size: 1vw;
+  align-items: center;
   text-align: center;
   list-style-type: none;
   padding-top: 0.3vw;
@@ -67,6 +68,7 @@ body {
 
 #name1 {
   font-size: 1.5vw;
+  align-items: center;
   list-style-type: none;
   font-family: 'Courier New', Courier, monospace;
   color: rgb(255, 255, 255);
@@ -76,6 +78,7 @@ body {
 
 #name2 {
   font-size: 1.5vw;
+  align-items: center;
   list-style-type: none;
   font-family: 'Courier New', Courier, monospace;
   color: rgb(255, 255, 255);
@@ -85,6 +88,7 @@ body {
 
 #name3 {
   font-size: 1.5vw;
+  align-items: center;
   list-style-type: none;
   font-family: 'Courier New', Courier, monospace;
   color: rgb(255, 255, 255);
@@ -94,6 +98,7 @@ body {
 
 #name4 {
   font-size: 1.5vw;
+  align-items: center;
   list-style-type: none;
   font-family: 'Courier New', Courier, monospace;
   color: rgb(255, 255, 255);
@@ -103,6 +108,7 @@ body {
 
 #name5 {
   font-size: 1.5vw;
+  align-items: center;
   list-style-type: none;
   font-family: 'Courier New', Courier, monospace;
   color: rgb(255, 255, 255);
@@ -112,6 +118,7 @@ body {
 
 #name6 {
   font-size: 1.5vw;
+  align-items: center;
   list-style-type: none;
   font-family: 'Courier New', Courier, monospace;
   color: rgb(255, 255, 255);
@@ -121,6 +128,7 @@ body {
 
 #name7 {
   font-size: 1.5vw;
+  align-items: center;
   list-style-type: none;
   font-family: 'Courier New', Courier, monospace;
   color: rgb(255, 255, 255);
@@ -130,6 +138,7 @@ body {
 
 #name8 {
   font-size: 1.5vw;
+  align-items: center;
   list-style-type: none;
   font-family: 'Courier New', Courier, monospace;
   color: rgb(255, 255, 255);
@@ -166,13 +175,6 @@ body {
   font-weight: bold;
   margin: 0px 0px 5px 0px;
   color: rgb(40, 57, 11);
-}
-
-.inputname {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  padding-bottom: 1vh;
 }
 
 .playername {
