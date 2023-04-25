@@ -8,7 +8,7 @@ resource "aws_instance" "main" {
   tags = {
     "Name" = "${var.default_tags.env}-EC2"
   }
-  user_data = base64encode(file("C:/Users/thegy/Desktop/Skillstorm/Team-Hanson-P3/Project3-Terraform/user.sh"))
+  user_data = base64encode(file("user.sh"))
 }
 output "ec2_ssh_command" {
   value = "ssh -i Hanson.pem linux@ec2-${replace(aws_instance.main.public_ip, ".", "-")}.compute-1.amazonaws.com"

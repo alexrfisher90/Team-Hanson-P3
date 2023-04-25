@@ -28,7 +28,7 @@ resource "aws_api_gateway_integration_response" "snakePutIntR" {
 resource "aws_api_gateway_method" "snakeGet" {
   rest_api_id   = aws_api_gateway_rest_api.snakeAPI.id
   resource_id   = aws_api_gateway_rest_api.snakeAPI.root_resource_id
-  http_method   = "POST"
+  http_method   = "GET"
   authorization = "NONE"
 }
 
@@ -82,7 +82,7 @@ resource "aws_api_gateway_integration" "snakeGetInt" {
   rest_api_id             = aws_api_gateway_rest_api.snakeAPI.id
   resource_id             = aws_api_gateway_rest_api.snakeAPI.root_resource_id
   http_method             = aws_api_gateway_method.snakeGet.http_method
-  integration_http_method = aws_api_gateway_method.snakeGet.http_method
+  integration_http_method = "POST"
   type                    = "AWS"
   uri                     = aws_lambda_function.snakeGet.invoke_arn
 
