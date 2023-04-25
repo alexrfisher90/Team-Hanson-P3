@@ -11,13 +11,13 @@ provider "aws" {
   region = "us-east-1"
 }
 
-#Lambda zip
-provider "archive" {}
-data "archive_file" "zip" {
-  type        = "zip"
-  source_dir  = "C:\\Users\\thegy\\Desktop\\Skillstorm\\Project3\\Project3-Terraform\\lambda"
-  output_path = "index.zip"
-}
+# #Lambda zip
+# provider "archive" {}
+# data "archive_file" "zip" {
+#   type        = "zip"
+#   source_dir  = "C:\\Users\\thegy\\Desktop\\Skillstorm\\Project3\\Project3-Terraform\\lambda"
+#   output_path = "index.zip"
+# }
 
 
 # Create VPC; CIDR 10.0.0.0/16
