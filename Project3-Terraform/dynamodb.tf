@@ -1,21 +1,21 @@
 resource "aws_dynamodb_table" "db_table" {
- name = "high_scores"
- billing_mode = "PROVISIONED"
- read_capacity= "5"
- write_capacity= "5"
- hash_key = "player_name"
- range_key = "high_score"
+  name           = "snakehighscore"
+  billing_mode   = "PROVISIONED"
+  read_capacity  = "5"
+  write_capacity = "5"
+  hash_key       = "playername"
+  range_key      = "highscore"
 
-attribute {
-    name = "player_name"
+  attribute {
+    name = "playername"
     type = "S"
   }
   attribute {
-    name = "high_score"
+    name = "highscore"
     type = "N"
   }
 
- 
+
 }
 
 #Primary Key: player_name   Sort Key: high_score
@@ -45,7 +45,7 @@ attribute {
 # #  ttl {
 # #  // enabling TTL
 # #   enabled = true 
-  
+
 # #   // the attribute name which enforces  TTL, must be a Number      (Timestamp)
 # #   attribute_name = "expiryPeriod" 
 # #  }

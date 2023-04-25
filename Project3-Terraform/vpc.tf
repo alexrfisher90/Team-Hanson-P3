@@ -14,9 +14,9 @@ provider "aws" {
 #Lambda zip
 provider "archive" {}
 data "archive_file" "zip" {
-    type        = "zip"
-    source_dir  = "C:\\Users\\thegy\\Desktop\\Skillstorm\\Project3\\Project3-Terraform\\lambda"
-    output_path = "index.zip"
+  type        = "zip"
+  source_dir  = "C:\\Users\\thegy\\Desktop\\Skillstorm\\Project3\\Project3-Terraform\\lambda"
+  output_path = "index.zip"
 }
 
 
@@ -31,6 +31,44 @@ resource "aws_vpc" "main" {
   }
 }
 
+resource "aws_vpc" "mainvpc" {
+  cidr_block = "10.1.0.0/16"
+}
+
+resource "aws_default_security_group" "default" {
+  vpc_id = aws_vpc.main.id
+
+  ingress {
+    description = "All in"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "TCP"
+    self        = true
+  }
+  ingress {
+    description = "SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "TCP"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    description = "HTTP"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "TCP"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  #Outbound Rules
+  egress {
+    description = "Allow All"
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
 # Public Subnets 10.0.0.0/24
 resource "aws_subnet" "public" {
   count      = var.public_subnet_count
@@ -69,14 +107,14 @@ resource "aws_route_table" "public" {
 }
 # Public Routes - for route table
 resource "aws_route" "public" {
-  route_table_id = aws_route_table.public.id
+  route_table_id         = aws_route_table.public.id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id = aws_internet_gateway.main_igw.id
+  gateway_id             = aws_internet_gateway.main_igw.id
 }
 # Public Route Table Association
 resource "aws_route_table_association" "public" {
-  count = var.public_subnet_count
-  subnet_id = element(aws_subnet.public.*.id, count.index)
+  count          = var.public_subnet_count
+  subnet_id      = element(aws_subnet.public.*.id, count.index)
   route_table_id = aws_route_table.public.id
 }
 
