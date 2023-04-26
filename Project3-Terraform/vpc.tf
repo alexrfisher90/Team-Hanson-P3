@@ -69,6 +69,7 @@ resource "aws_default_security_group" "default" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
 # Public Subnets 10.0.0.0/24
 resource "aws_subnet" "public" {
   count      = var.public_subnet_count
@@ -79,7 +80,19 @@ resource "aws_subnet" "public" {
   tags = {
     "Name" = "${var.default_tags.env}-Public-Subnet-${data.aws_availability_zones.availability_zone.names[count.index]}"
   }
-  availability_zone = data.aws_availability_zones.availability_zone.names[count.index]
+  availability_zone = "us-east-1a"
+}
+
+resource "aws_subnet" "public2" {
+  count      = var.public_subnet_count
+  vpc_id     = aws_vpc.main.id
+  cidr_block = cidrsubnet(aws_vpc.main.cidr_block, 8, count.index + var.public_subnet_count)
+  # netnum = number to change based on subnet addition: 1st subnet 10.0.0.0/24. 10.0.1.0/24, 10.0.2.0/24
+  map_public_ip_on_launch = true
+  tags = {
+    "Name" = "${var.default_tags.env}-Public2-Subnet-${data.aws_availability_zones.availability_zone.names[count.index]}"
+  }
+  availability_zone = "us-east-1b"
 }
 
 # IGW
@@ -115,6 +128,12 @@ resource "aws_route" "public" {
 resource "aws_route_table_association" "public" {
   count          = var.public_subnet_count
   subnet_id      = element(aws_subnet.public.*.id, count.index)
+  route_table_id = aws_route_table.public.id
+}
+
+resource "aws_route_table_association" "public2" {
+  count          = var.public_subnet_count
+  subnet_id      = element(aws_subnet.public2.*.id, count.index)
   route_table_id = aws_route_table.public.id
 }
 

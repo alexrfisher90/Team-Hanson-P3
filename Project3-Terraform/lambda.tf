@@ -62,11 +62,12 @@ resource "aws_iam_role" "snakePutRole" {
   })
 }
 
-data "aws_iam_policy" "dbExec" {
-  arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaDynamoDBExecutionRole"
+resource "aws_iam_role_policy_attachment" "snakePutDBExec" {
+  role       = aws_iam_role.snakePutRole.name
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaDynamoDBExecutionRole"
 }
 
 resource "aws_iam_role_policy_attachment" "snakePutBasicExecutionRole" {
   role       = aws_iam_role.snakePutRole.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  policy_arn = "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
 }
