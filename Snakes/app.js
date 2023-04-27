@@ -62,7 +62,7 @@ const ok = document.querySelector('#ok')
 
 //THIS CODE IS STUPID
 
-const endpoint = "https://el6v7i77d4.execute-api.us-east-1.amazonaws.com/prod/";
+const endpoint = "https://c4wz96swm8.execute-api.us-east-1.amazonaws.com/prod";
 
 const gethighscores = async () => {
   try {
