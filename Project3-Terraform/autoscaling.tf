@@ -13,7 +13,8 @@ resource "aws_launch_configuration" "as_conf" {
 resource "aws_autoscaling_group" "bar" {
   name                 = "${aws_launch_configuration.as_conf.name}-asg"
   launch_configuration = aws_launch_configuration.as_conf.name
-  min_size             = 2
+  desired_capacity     = 2
+  min_size             = 0
   max_size             = 2
   target_group_arns    = ["${aws_lb_target_group.snakeTargetGroup.arn}"]
 
